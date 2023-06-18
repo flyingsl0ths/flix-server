@@ -1,9 +1,6 @@
 import express from "express";
+import { setupServer } from "./config";
 
-const app = express();
-
-app.get("/", function (_, res) {
-  res.send("Hello World");
-});
+const app = setupServer(express());
 
 app.listen(3000);
