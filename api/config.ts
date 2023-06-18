@@ -1,14 +1,14 @@
 import { MongoClient, ServerApiVersion } from "mongodb";
 import express from "express";
 import cors from "cors";
-import { isOkorNotFound } from "./utils";
+import { isOkorNotFound } from "./utils.js";
 
 export function corsConfig(): { origin: string } {
   return {
     origin:
       process.env["NODE_ENV"] === "production"
-        ? "https://flex-server.onrender.com/"
-        : "localhost:3000",
+        ? "https://flix-server.onrender.com/"
+        : `localhost:${process.env["FLIX_SERVER_PORT"]!}`
   };
 }
 
@@ -16,14 +16,14 @@ export function setupServer(app: express.Express): express.Express {
   app.use(express.json());
   app.use(cors(corsConfig()));
 
-  const DB_URI = process.env["MONGODB_URL"]!;
+  const DB_URI = process.env["FLIX_MONGODB_URL"]!;
 
   const client = new MongoClient(DB_URI, {
     serverApi: {
       version: ServerApiVersion.v1,
       strict: true,
-      deprecationErrors: true,
-    },
+      deprecationErrors: true
+    }
   });
 
   app.get("/", async (req, res) => {
@@ -46,8 +46,8 @@ export function setupServer(app: express.Express): express.Express {
                 plot: 1,
                 poster: 1,
                 released: 1,
-                title: 1,
-              },
+                title: 1
+              }
             }
           )
           .toArray()

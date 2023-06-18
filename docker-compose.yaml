@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  server:
+    build: ./api
+    environment:
+      - FLIX_MONGODB_URL=${FLIX_MONGODB_URL}
+      - FLIX_SERVER_PORT=${FLIX_SERVER_PORT}
+    container_name: flix-server
+    ports:
+      - "${FLIX_SERVER_PORT}:${FLIX_SERVER_PORT}"
+    volumes:
+      - ./api:/api
+      - /api/node_modules
